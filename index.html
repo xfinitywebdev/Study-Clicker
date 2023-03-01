@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Study Clicker</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body onload="loadGame()">
+        <h1>Clicks: <span id="study-text">0</span></h1>
+
+        <button onclick="createStudy()">Create Study Clicks</button>
+
+        <details>
+            <summary>Upgrade Price List</summary>
+            <ul>
+                <li>Total cost for more clicks: <span id="moreClickText">30</span></li>
+                <li>Total cost for auto clicks: <span id="autoClickText">100</span></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Shop</summary>
+            <button onclick="buyClicks()">Buy more clicks</button>
+            <button onclick="buyAutoClicker()">Buy Auto Clicker</button>
+        </details>
+
+        <details>
+            <summary>Settings</summary>
+            <p><b>NOTE: Settings are in BETA. You have to start clicking to get your clicks. </b></p>
+            <button onclick="saveGame()">Save Game</button>
+            <button onclick="loadGame()">Load Game</button>
+            <button onclick="localStorage.clear()">Clear localStorage</button>
+        </details>
+
+    <script type="text/javascript">
+      var clicks = 0;
+      var cpc = 1;
+      var moreClicks = 30;
+      var autoClicker = 100;
+      var developerMode = 'true';
+
+      function setDeveloper() {
+
+          if (developerMode === 'true') {
+            clicks = 9999999999999999;
+            document.getElementById('study-text').innerHTML = clicks;
+          } else {
+            alert('Please enable developer mode.')
+          }
+
+      }
+
+      function saveGame() {
+        var savedClicks = {
+          clicks: clicks
+        };
+        localStorage.setItem("savedClicks", JSON.stringify(savedClicks));
+      }
+
+      function loadGame() {
+        var savedGame = JSON.parse(localStorage.getItem("savedClicks"));
+
+        if (typeof savedGame.clicks !== "undefined") clicks = savedGame.clicks;
+      }
+
+      function createStudy() {
+        clicks = clicks + cpc;
+        document.getElementById('study-text').innerHTML = clicks;
+      }
+
+      function buyClicks() {
+
+        if (clicks >= moreClicks) {
+          clicks = clicks - moreClicks;
+          cpc = cpc + 1;
+          moreClicks = Math.round(moreClicks * 1.1);
+          document.getElementById('study-text').innerHTML = clicks;
+          document.getElementById('moreClickText').innerHTML = moreClicks;
+        } else {
+          alert("You lack the semester's requirements.");
+        }
+
+      }
+
+      function buyAutoClicker() {
+          if (clicks >= autoClicker) {
+            clicks = clicks - autoClicker;
+            setInterval(function() {
+              clicks = clicks + cpc;
+              document.getElementById('study-text').innerHTML = clicks;
+            }, 1000)
+            autoClicker = Math.round(autoClicker * 1.1);
+            document.getElementById('study-text').innerHTML = clicks;
+            document.getElementById('autoClickText').innerHTML = autoClicker;
+          } else {
+            alert("You lack the semester's requirements.");
+          }
+      }
+
+    </script>
+
+    </body>
+</html>
