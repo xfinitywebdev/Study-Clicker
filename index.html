@@ -33,11 +33,6 @@
             <button onclick="loadGame()">Load Game</button>
             <button onclick="localStorage.clear()">Clear localStorage</button>
         </details>
-        
-        <details>
-            <summary>Videos</summary>
-            <a href="https://rumble.com/v2blzz6-how-to-code-an-incremental-game-using-pure-html-js.html" target="_blank"><button>Open Part 1 of tutorial</button></a>
-        </details>
 
     <script type="text/javascript">
       var clicks = 0;
@@ -59,7 +54,9 @@
 
       function saveGame() {
         var savedClicks = {
-          clicks: clicks
+          clicks: clicks,
+          moreClicks: moreClicks,
+          autoClicker: autoClicker
         };
         localStorage.setItem("savedClicks", JSON.stringify(savedClicks));
       }
@@ -68,6 +65,8 @@
         var savedGame = JSON.parse(localStorage.getItem("savedClicks"));
 
         if (typeof savedGame.clicks !== "undefined") clicks = savedGame.clicks;
+        if (typeof savedGame.moreClicks !== "undefined") moreClicks = savedGame.moreClicks;
+        if (typeof savedGame.autoClicker !== "undefined") autoClicker = savedGame.autoClicker;
       }
 
       function createStudy() {
